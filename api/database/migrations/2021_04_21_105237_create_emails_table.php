@@ -23,6 +23,8 @@ class CreateEmailsTable extends Migration
             $table->string('status');
             $table->timestamps();
         });
+
+
     }
 
     /**
