@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Email;
 
 class CreateEmailTest extends TestCase
 {
@@ -13,9 +14,11 @@ class CreateEmailTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function testStoringEmail()
     {
-        $response = $this->get('/');
+        $data = Email::factory()->make();
+
+        $response = $this->post('/api/email/store',$data);
 
         $response->assertStatus(200);
     }
