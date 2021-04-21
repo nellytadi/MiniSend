@@ -32,8 +32,16 @@ class EmailController extends Controller
     public function search(){
 
     }
-    public function getById(){
+    public function getById($id){
+        $email = Email::find($id);
 
+        if ($email){
+            return new EmailResource($email);
+        }
+
+        return response()->json([
+            'message'=>'Email resource not found'
+        ],404);
     }
     public function getByRecipient(){
 
