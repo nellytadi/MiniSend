@@ -50,6 +50,7 @@ class GetEmailTest extends TestCase
 
 
     public function testGetEmailByRecipient(){
+
         Email::factory(5)->create();
 
         $emails = Email::inRandomOrder()->limit(2)->get()->toArray();
@@ -57,19 +58,26 @@ class GetEmailTest extends TestCase
             $response = $this->get('/api/email/recipient/'.$email['to']);
             $response->assertStatus(200)->assertJsonStructure([
                 'data' => [
-                    'id',
-                    'from',
-                    'to',
-                    'subject',
-                    'text_content',
-                    'html_content',
-                    'status',
-                    'created_at'
+                    '*' => [
+                        'id',
+                        'from',
+                        'to',
+                        'subject',
+                        'text_content',
+                        'html_content',
+                        'status',
+                        'created_at'
+                    ]
                 ]
             ]);
         }
 
     }
 
+
+    public function testGetEmailByRecipientReturnsEmptyIfEmailDoesNotExist()
+    {
+
+    }
 
 }

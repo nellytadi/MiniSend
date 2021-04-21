@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EmailCollection;
 use App\Http\Resources\EmailResource;
 use App\Models\Email;
 use Illuminate\Http\Request;
@@ -43,8 +44,16 @@ class EmailController extends Controller
             'message'=>'Email resource not found'
         ],404);
     }
-    public function getByRecipient(){
+    public function getByRecipient($recipient){
+        $emails = Email::where('to',$recipient)->get();
 
+        if (count($emails) > 0){
+            return new EmailCollection($emails);
+        }
+
+        return response()->json([
+            'message'=>'Email resource not found'
+        ],404);
     }
 
 }
