@@ -22,18 +22,26 @@ class EmailFactory extends Factory
     public function definition()
     {
         $status = ['Posted','Sent','Failed'];
+
         return [
             'from'=>$this->faker->email,
             'to'=>$this->faker->email,
             'subject' => $this->faker->sentence,
-            'text_content'=>$this->faker->paragraphs(rand(5,10)),
+            'text_content'=>$this->faker->paragraph(rand(5,15)),
             'html_content'=> $this->htmlParagraph(),
-            'status'=>$status[rand(0,2)]
+            'status'=> $status[rand(0,2)]
         ];
     }
 
-    private function htmlParagraph(): string
+    public function htmlParagraph()
     {
-        return '<p>'.$this->faker->paragraph(rand(3,6)).'</p>';
+        $paragraphs = rand(1, 5);
+        $i = 0;
+        $ret = "";
+        while ($i < $paragraphs) {
+            $ret .= "<p>" . $this->faker->paragraph(rand(2, 6)) . "</p>";
+            $i++;
+        }
+        return $ret;
     }
 }

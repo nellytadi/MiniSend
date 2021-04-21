@@ -21,10 +21,9 @@ class EmailAttachmentFactory extends Factory
      */
     public function definition()
     {
-        $file = ['test/my resume.pdf','test/test.png'];
 
         return [
-            'attachments' => $this->faker->file(asset($file[rand(0,1)]))
+            'attachment' => $this->faker->file(public_path('test/'), public_path('test/emails'), false),
         ];
     }
 }
