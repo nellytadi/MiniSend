@@ -23,20 +23,22 @@ class GetEmailTest extends TestCase
         foreach($emails as $email){
             $response = $this->get('/api/email/'.$email['id']);
             $response->assertStatus(200)->assertJsonStructure([
-                'data'=>[
+                'data' => [
+                    'id',
                     'from',
                     'to',
                     'subject',
                     'text_content',
                     'html_content',
-                    'status'
+                    'status',
+                    'created_at'
                 ]
            ]);
         }
 
     }
     public function testGetEmailByIdReturnsEmptyIfEmailDoesNotExist(){
-        $id = Str::random(10);
+        $id = Str::random(32);
         $email = Email::whereId($id)->exists();
         if (!$email){
             $response = $this->get('/api/email/'.$id);
@@ -45,5 +47,29 @@ class GetEmailTest extends TestCase
             $this->testGetEmailByIdReturnsEmptyIfEmailDoesNotExist();
         }
     }
+
+
+    public function testGetEmailByRecipient(){
+        Email::factory(5)->create();
+
+        $emails = Email::inRandomOrder()->limit(2)->get()->toArray();
+        foreach($emails as $email){
+            $response = $this->get('/api/email/recipient/'.$email['to']);
+            $response->assertStatus(200)->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'from',
+                    'to',
+                    'subject',
+                    'text_content',
+                    'html_content',
+                    'status',
+                    'created_at'
+                ]
+            ]);
+        }
+
+    }
+
 
 }

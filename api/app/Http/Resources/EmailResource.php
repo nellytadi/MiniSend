@@ -15,12 +15,14 @@ class EmailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'from'=>$this->from,
-            'to'=>$this->to,
+            'id' => $this->id,
+            'from' => $this->from,
+            'to' => $this->to,
             'subject' => $this->subject,
-            'text_content'=>$this->text_content,
-            'html_content'=> $this->html_content,
-            'status'=> $this->status
+            'text_content' => $this->text_content,
+            'html_content' => $this->html_content,
+            'status' => $this->status,
+            'created_at' => $this->created_at
         ];
     }
 }
