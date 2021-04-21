@@ -75,9 +75,17 @@ class GetEmailTest extends TestCase
     }
 
 
-    public function testGetEmailByRecipientReturnsEmptyIfEmailDoesNotExist()
+    public function testGetEmailByRecipientReturnsEmptyIfRecipientDoesNotExist()
     {
-
+        //generate random name
+        $recipient = Str::random(20);
+        $email = Email::whereTo($recipient)->exists();
+        if (!$email){
+            $response = $this->get('/api/email/recipient/'.$recipient);
+            $response->assertStatus(404);
+        }else{
+            $this->testGetEmailByIdReturnsEmptyIfEmailDoesNotExist();
+        }
     }
 
 }
