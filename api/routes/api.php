@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::post('/email/store',[EmailController::class,'store']);
+Route::get('/email/{id}',[EmailController::class,'getById']);
+Route::get('/email/recipient/{recipient}',[EmailController::class,'getByRecipient']);
+Route::get('/email/search',[EmailController::class,'search']);
+
+
