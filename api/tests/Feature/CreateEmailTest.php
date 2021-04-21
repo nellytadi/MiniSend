@@ -24,8 +24,6 @@ class CreateEmailTest extends TestCase
     }
 
     public function testEmailDataIsValidated(){
-
-
         $data = Email::factory()->state([
             'from'=>'wrong email',
             'to'=>'wrong email format',

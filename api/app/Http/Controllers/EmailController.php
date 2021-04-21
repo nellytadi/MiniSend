@@ -10,6 +10,15 @@ class EmailController extends Controller
 {
     public function store(Request $request){
 
+        $request->validate([
+            'from' => 'required|email',
+            'to' => 'required|email',
+            'subject' => 'required|string',
+            'text_content'=>'nullable|string',
+            'html_content' =>'nullable|string',
+            'attachments.*' => 'nullable|file'
+        ]);
+
         $email = Email::create([
             'from' => $request->input('from'),
             'to' => $request->input('to'),
