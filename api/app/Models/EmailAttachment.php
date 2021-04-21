@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class EmailAttachment extends Model
 {
     use HasFactory;
+
 }
