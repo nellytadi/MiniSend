@@ -68,9 +68,9 @@ class EmailController extends Controller
             ->when($to,function ($query, $to) {
                 return $query->where('to', $to);
             })
-//            ->when($subject,function ($query, $subject) {
-//                return $query->where('subject', $subject);
-//            })
+            ->when($subject,function ($query, $subject) {
+                return $query->where('subject','LIKE', $subject);
+            })
 //            ->when($status,function ($query, $status) {
 //                return $query->whereIn('status', $status);
 //            })

@@ -71,7 +71,7 @@ class SearchEmailTest extends TestCase
 
         $response = $this->json('GET','/api/email/search?subject='.$subject);
 
-        //see it returns 5 record all 'to' is the $to created
+        //see it returns 5 record and 'subject' has the $subject created
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
