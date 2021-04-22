@@ -1,9 +1,16 @@
 <template>
   <div class="container">
 
-    <div class="table-responsive">
-      <b-table striped :fields="fields" :items="items.data" ></b-table>
-    </div>
+
+      <b-table striped :fields="fields" :items="items.data" responsive="lg" >
+        <!-- A custom formatted column -->
+        <!-- A virtual composite column -->
+        <template #cell(more)="data">
+          {{ data.item.id }}
+        </template>
+
+      </b-table>
+
 
 
     <pagination :data="items" @pagination-change-page="getResults"></pagination>
@@ -22,8 +29,15 @@ export default {
     return {
       perPage: 3,
       currentPage: 1,
-      fields: ['to', 'from', 'subject','status'],
-      items: []
+      fields: [
+          {key:'to',label:'Recipient',headerTitle:'Recipient'},
+          {key:'from',label:'Sender',headerTitle:'Sender'},
+        {key:'subject',label:'Subject',headerTitle:'Subject'},
+
+        {key:'status',label:'Status',headerTitle:'Status'},
+        'more'
+      ],
+      items: {}
     }
   },
   mounted() {
