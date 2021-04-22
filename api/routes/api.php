@@ -19,11 +19,9 @@ Route::middleware('json.response')->group(function () {
     Route::get('/email/id/{id}', [EmailController::class, 'getById']);
     Route::get('/email/recipient/{recipient}', [EmailController::class, 'getByRecipient']);
 
-//    Route::get('/email/search/', [EmailController::class,'search']);
+    Route::get('/email/search/', [EmailController::class,'search']);
 
-    Route::get('/email/search', function (\Illuminate\Http\Request $request){
-        return $request->input('from');
-    });
+
 
 });
 

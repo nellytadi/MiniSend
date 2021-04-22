@@ -38,9 +38,30 @@ class SearchEmailTest extends TestCase
 
     }
 
-//    public function testSearchWithToParameter(){
-//
-//    }
+    public function testSearchWithToParameter(){
+        $to = Str::random(10).'@mailsender.com';
+        $count = 5;
+        Email::factory($count)->state([
+            'to' => $to
+        ])->create();
+
+        $response = $this->get('/api/email/search?to='.$to);
+        //see it returns 5 record where from = testmail
+        $response->assertStatus(200)->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'from',
+                    'to',
+                    'subject',
+                    'text_content',
+                    'html_content',
+                    'status',
+                    'created_at'
+                ]
+            ]
+        ])->assertJsonCount($count, 'data');
+    }
 //
 //    public function testSearchWithSubjectParameter(){
 //
