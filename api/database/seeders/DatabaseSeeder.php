@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        if (env('APP_ENV') === 'production') exit('Fatal! APP is in production');
+
         Email::factory(50)->create();
         Email::factory(50)
             ->has(EmailAttachment::factory()->count(rand(1,3)))

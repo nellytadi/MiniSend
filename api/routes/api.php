@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
-
+use App\Http\Controllers\StatusController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,6 +21,7 @@ Route::middleware('json.response')->group(function () {
 
     Route::get('/email/search/', [EmailController::class,'search']);
 
+    Route::get('/email/statuses/', [StatusController::class,'getStatuses']);
 
 
 });
