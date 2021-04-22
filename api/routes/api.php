@@ -23,6 +23,7 @@ Route::middleware('json.response')->group(function () {
 
     Route::get('/email/statuses/', [StatusController::class,'getStatuses']);
 
+    Route::get('/emails',[EmailController::class,'getAllEmails']);
 
 });
 

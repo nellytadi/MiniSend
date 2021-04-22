@@ -1,16 +1,17 @@
 <template>
   <div>
     <b-container>
-      <b-col lg="12" class="pb-2 pt-4 text-right"><b-button size="lg" variant="outline-primary" v-text="'Advanced Search'" v-on:click="show = !show"></b-button></b-col>
+      <b-card bg-variant="light">
+        <b-col lg="12" class="pb-2 pt-4 text-right"><b-button size="md" variant="outline-primary" v-text="'Advanced Search'" v-on:click="show = !show"></b-button></b-col>
 
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-form-group
           id="input-group-1"
           label="Sender"
-          label-for="for">
+          label-for="from">
         <b-form-input
             id="for"
-            v-model="form.for"
+            v-model="form.from"
             type="email"
             placeholder="Enter sender's email"
         ></b-form-input>
@@ -46,7 +47,7 @@
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
-
+      </b-card>
     </b-container>
   </div>
 </template>
