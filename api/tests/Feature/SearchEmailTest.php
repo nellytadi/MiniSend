@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Email;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class SearchEmailTest extends TestCase
@@ -12,7 +13,7 @@ class SearchEmailTest extends TestCase
   //  use WithFaker;
 
     public function testSearchWithFromParameter(){
-        $from = 'test_from_mail@mailsender.com';
+        $from = Str::random(10).'@mailsender.com';
         $count = 5;
         Email::factory($count)->state([
                 'from' => $from
@@ -37,16 +38,16 @@ class SearchEmailTest extends TestCase
 
     }
 
-    public function testSearchWithToParameter(){
-
-    }
-
-    public function testSearchWithSubjectParameter(){
-
-    }
-    public function testSearchWithStatusParameters(){
-
-    }
+//    public function testSearchWithToParameter(){
+//
+//    }
+//
+//    public function testSearchWithSubjectParameter(){
+//
+//    }
+//    public function testSearchWithStatusParameters(){
+//
+//    }
 //      public function testSearchWithFromAndToParameters(){
 //
 //    }

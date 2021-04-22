@@ -21,7 +21,7 @@ class GetEmailTest extends TestCase
 
         $emails = Email::inRandomOrder()->limit(2)->get()->toArray();
         foreach($emails as $email){
-            $response = $this->get('/api/email/'.$email['id']);
+            $response = $this->get('/api/email/id/'.$email['id']);
             $response->assertStatus(200)->assertJsonStructure([
                 'data' => [
                     'id',
@@ -41,7 +41,7 @@ class GetEmailTest extends TestCase
         $id = Str::random(32);
         $email = Email::whereId($id)->exists();
         if (!$email){
-            $response = $this->get('/api/email/'.$id);
+            $response = $this->get('/api/email/id/'.$id);
             $response->assertStatus(404);
         }else{
             $this->testGetEmailByIdReturnsEmptyIfEmailDoesNotExist();

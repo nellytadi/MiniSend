@@ -56,7 +56,15 @@ class EmailController extends Controller
         ],404);
     }
 
-    public function search(){
+    public function search(Request $request){
 
+        $emails = Email::whereFrom($request->input('from'))->get();
+
+        if (count($emails) > 0){
+            return new EmailCollection($emails);
+        }
+        return response()->json([
+            'message'=>'Email resource not found'
+        ],404);
     }
 }
