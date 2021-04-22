@@ -1,5 +1,8 @@
 <template>
   <div>
+    <b-container>
+      <b-col lg="12" class="pb-2 pt-4 text-right"><b-button size="lg" variant="outline-primary" v-text="'Advanced Search'" v-on:click="show = !show"></b-button></b-col>
+
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-form-group
           id="input-group-1"
@@ -40,34 +43,39 @@
         ></b-form-select>
       </b-form-group>
 
-
-
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
-    <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card>
+
+    </b-container>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AdvancedSearch",
 
   data() {
     return {
       form: {
-        email: '',
-        name: '',
-        food: null,
-        checked: []
+        from: '',
+        to: '',
+        subject: '',
+        status: ''
       },
-      foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-      show: true
+      statuses: null,
+      show: false
     }
   },
+  mounted () {
+    axios.get('http://api.test/api/email/statuses/')
+        .then(response => (this.statuses = response.data))
+
+
+  },
   methods: {
+
     onSubmit(event) {
       event.preventDefault()
       alert(JSON.stringify(this.form))
@@ -75,16 +83,17 @@ export default {
     onReset(event) {
       event.preventDefault()
       // Reset our form values
-      this.form.email = ''
-      this.form.name = ''
-      this.form.food = null
-      this.form.checked = []
+      this.form.from = ''
+      this.form.to = ''
+      this.form.subject = ''
+      this.form.status = ''
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.$nextTick(() => {
         this.show = true
       })
-    }
+    },
+
   }
 }
 </script>
