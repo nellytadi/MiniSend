@@ -28,7 +28,9 @@ class SearchEmailTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count, fn ($json) =>
+            $json->has('meta')
+                ->has('links')
+            ->has('data', $count, fn ($json) =>
                 $json
                     ->where('from', $from)
                     ->etc()
@@ -51,7 +53,9 @@ class SearchEmailTest extends TestCase
          $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count, fn ($json) =>
+            $json->has('meta')
+                ->has('links')
+                ->has('data', $count, fn ($json) =>
                 $json
                     ->where('to', $to)
                     ->etc()
@@ -89,7 +93,9 @@ class SearchEmailTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data.0',fn ($json) =>
+            $json->has('meta')
+                ->has('links')
+                ->has('data.0',fn ($json) =>
                 $json
                 ->where('status', $status)
                 ->etc()
@@ -124,7 +130,9 @@ class SearchEmailTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count, fn ($json) =>
+            $json->has('meta')
+                ->has('links')
+                ->has('data', $count, fn ($json) =>
             $json
                 ->where('from', $from)
                 ->where('to', $to)
