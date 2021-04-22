@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 class SearchEmailTest extends TestCase
 {
@@ -16,25 +17,23 @@ class SearchEmailTest extends TestCase
         $from = Str::random(10).'@mailsender.com';
         $count = 5;
         Email::factory($count)->state([
-                'from' => $from
-            ])->create();
+            'from' => $from
+        ])->create();
 
-        $response = $this->get('/api/email/search?from='.$from);
-        //see it returns 5 record where from = testmail
-        $response->assertStatus(200)->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'from',
-                    'to',
-                    'subject',
-                    'text_content',
-                    'html_content',
-                    'status',
-                    'created_at'
-                ]
-            ]
-        ])->assertJsonCount($count, 'data');
+        $response = $this->json('GET','/api/email/search?from='.$from);
+
+        //see it returns 5 record all 'from' is the $from created
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->has('data', $count)
+                ->has('data', $count, fn ($json) =>
+                $json
+                    ->where('from', $from)
+                    ->etc()
+                )
+            );
 
     }
 
@@ -45,27 +44,27 @@ class SearchEmailTest extends TestCase
             'to' => $to
         ])->create();
 
-        $response = $this->get('/api/email/search?to='.$to);
-        //see it returns 5 record where from = testmail
-        $response->assertStatus(200)->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'from',
-                    'to',
-                    'subject',
-                    'text_content',
-                    'html_content',
-                    'status',
-                    'created_at'
-                ]
-            ]
-        ])->assertJsonCount($count, 'data');
+        $response = $this->json('GET','/api/email/search?to='.$to);
+
+        //see it returns 5 record all 'to' is the $to created
+         $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->has('data', $count)
+                ->has('data', $count, fn ($json) =>
+                $json
+                    ->where('to', $to)
+                    ->etc()
+                )
+            );
+
+
+
     }
-//
-//    public function testSearchWithSubjectParameter(){
-//
-//    }
+
+    public function testSearchWithSubjectParameter(){
+
+    }
 //    public function testSearchWithStatusParameters(){
 //
 //    }
