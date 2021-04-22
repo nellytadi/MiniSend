@@ -14,7 +14,7 @@ class SearchEmailTest extends TestCase
     use WithFaker;
 
     public function testSearchWithFromParameter(){
-        $from = Str::random(10).'@mailsender.com';
+        $from = $this->randomEmail();
         $count = 5;
         Email::factory($count)->state([
             'from' => $from
@@ -37,7 +37,8 @@ class SearchEmailTest extends TestCase
     }
 
     public function testSearchWithToParameter(){
-        $to = Str::random(10).'@mailsender.com';
+        $to = $this->randomEmail();
+
         $count = 5;
         Email::factory($count)->state([
             'to' => $to
@@ -56,11 +57,10 @@ class SearchEmailTest extends TestCase
                 )
             );
 
-
-
     }
 
     public function testSearchWithSubjectParameter(){
+
         $subject = $this->faker->sentence;
         $count = 5;
         Email::factory($count)->state([
@@ -97,7 +97,43 @@ class SearchEmailTest extends TestCase
 
 
     }
-//      public function testSearchWithFromAndToParameters(){
-//
-//    }
+
+    public function testSearchWithMultipleParameters(){
+
+        $from = $this->randomEmail();
+        $to = $this->randomEmail();
+        $subject = $this->faker->sentence;
+        $statuses = ['Posted','Sent','Failed'];
+        $status = $statuses[rand(0,2)];
+        $count = 5;
+
+        Email::factory($count)->state([
+            'from' => $from,
+            'to' => $to,
+            'subject' => $subject,
+            'status' => $status
+        ])->create();
+
+        $response = $this->json('GET',"/api/email/search?from=$from&to=$to&subject=$subject&status=$status");
+
+        //see it returns 5 record all 'from' is the $from created
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->has('data', $count, fn ($json) =>
+            $json
+                ->where('from', $from)
+                ->where('to', $to)
+                ->where('subject', $subject)
+                ->where('status', $status)
+                ->etc()
+            )
+            );
+
+    }
+
+    private function randomEmail(){
+        return Str::random(10).'@mailsender.com';
+    }
 }

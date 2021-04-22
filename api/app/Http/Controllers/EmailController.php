@@ -71,7 +71,7 @@ class EmailController extends Controller
 
     }
 
-    public function emailResults($emails)
+    private function emailResults($emails)
     {
         if ($emails->isEmpty()){
             return response()->json([
@@ -81,7 +81,7 @@ class EmailController extends Controller
         return new EmailCollection($emails);
     }
 
-    public function emailResult($email){
+    private function emailResult($email){
 
         if (!$email){
             return response()->json([
