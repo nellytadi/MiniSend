@@ -28,32 +28,23 @@ class EmailController extends Controller
             'html_content' => $request->input('html_content')
         ]);
 
-        return new EmailResource($email);
+        return $this->emailResult($email);
+
     }
 
     public function getById($id){
         $email = Email::find($id);
 
-        if ($email){
-            return new EmailResource($email);
-        }
+        return $this->emailResult($email);
 
-        return response()->json([
-            'message'=>'Email resource not found'
-        ],404);
     }
 
 
     public function getByRecipient($recipient){
         $emails = Email::where('to',$recipient)->get();
 
-        if (count($emails) > 0){
-            return new EmailCollection($emails);
-        }
+        return $this->emailResults($emails);
 
-        return response()->json([
-            'message'=>'Email resource not found'
-        ],404);
     }
 
     public function search(Request $request){
@@ -69,21 +60,35 @@ class EmailController extends Controller
                 return $query->where('to', $to);
             })
             ->when($subject,function ($query, $subject) {
-                return $query->where('subject','LIKE', $subject);
+                return $query->where('subject','LIKE', $subject.'%');
             })
-//            ->when($status,function ($query, $status) {
-//                return $query->whereIn('status', $status);
-//            })
+            ->when($status,function ($query, $status) {
+                return $query->where('status', $status);
+            })
             ->get();
 
+        return $this->emailResults($emails);
 
+    }
 
-        if ($emails){
-            return new EmailCollection($emails);
+    public function emailResults($emails)
+    {
+        if ($emails->isEmpty()){
+            return response()->json([
+                'message'=>'Email resource not found'
+            ],404);
         }
+        return new EmailCollection($emails);
+    }
 
-        return response()->json([
-            'message'=>'Email resource not found'
-        ],404);
+    public function emailResult($email){
+
+        if (!$email){
+            return response()->json([
+                'message'=>'Email resource not found'
+            ],404);
+        }
+        return new EmailResource($email);
+
     }
 }

@@ -27,8 +27,7 @@ class SearchEmailTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count)
-                ->has('data', $count, fn ($json) =>
+            $json->has('data', $count, fn ($json) =>
                 $json
                     ->where('from', $from)
                     ->etc()
@@ -50,8 +49,7 @@ class SearchEmailTest extends TestCase
          $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count)
-                ->has('data', $count, fn ($json) =>
+            $json->has('data', $count, fn ($json) =>
                 $json
                     ->where('to', $to)
                     ->etc()
@@ -72,22 +70,33 @@ class SearchEmailTest extends TestCase
         $response = $this->json('GET','/api/email/search?subject='.$subject);
 
         //see it returns 5 record and 'subject' has the $subject created
-        $response
-            ->assertStatus(200)
+        $response->assertStatus(200)
+            ->assertSeeText($subject)
+            ->assertJsonCount($count, 'data');
+
+    }
+    public function testSearchWithStatusParameters(){
+
+
+        $emails = Email::factory(10)->create();
+
+        $statuses = ['Posted','Sent','Failed'];
+        $status = $statuses[rand(0,2)];
+
+        $response = $this->json('GET', '/api/email/search?status=' .$status );
+
+        $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', $count)
-                ->has('data', $count, fn ($json) =>
+            $json->has('data.0',fn ($json) =>
                 $json
-                    ->where('subject', $subject)
-                    ->etc()
-                )
+                ->where('status', $status)
+                ->etc()
+            )
             );
 
 
+
     }
-//    public function testSearchWithStatusParameters(){
-//
-//    }
 //      public function testSearchWithFromAndToParameters(){
 //
 //    }
