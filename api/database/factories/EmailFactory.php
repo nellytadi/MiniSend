@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\Helper;
 use App\Models\Email;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +22,7 @@ class EmailFactory extends Factory
      */
     public function definition()
     {
-        $status = ['Posted','Sent','Failed'];
+        $status = (new Helper)->getStatuses();
 
         return [
             'from'=>$this->faker->email,

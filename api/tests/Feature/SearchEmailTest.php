@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Helpers\Helper;
 use App\Models\Email;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -80,7 +81,8 @@ class SearchEmailTest extends TestCase
 
         $emails = Email::factory(10)->create();
 
-        $statuses = ['Posted','Sent','Failed'];
+        $statuses = (new Helper)->getStatuses();
+
         $status = $statuses[rand(0,2)];
 
         $response = $this->json('GET', '/api/email/search?status=' .$status );
@@ -103,7 +105,8 @@ class SearchEmailTest extends TestCase
         $from = $this->randomEmail();
         $to = $this->randomEmail();
         $subject = $this->faker->sentence;
-        $statuses = ['Posted','Sent','Failed'];
+        $statuses = (new Helper)->getStatuses();
+
         $status = $statuses[rand(0,2)];
         $count = 5;
 
