@@ -47,8 +47,9 @@ class EmailController extends Controller
     }
 
 
-    public function getByRecipient($recipient){
-        $emails = Email::where('to',$recipient)->get();
+    public function getByRecipient(Request $request,$recipient){
+        $per_page = $request->input("per_page") ?? 10;
+        $emails = Email::where('to',$recipient)->paginate($per_page);
 
         return $this->emailResults($emails);
 
@@ -59,6 +60,7 @@ class EmailController extends Controller
         $to = $request->input('to');
         $subject = $request->input('subject');
         $status = $request->input('status');
+        $per_page = $request->input("per_page") ?? 10;
 
         $emails = Email::when($from,function ($query, $from) {
             return $query->where('from', $from);
@@ -72,7 +74,7 @@ class EmailController extends Controller
             ->when($status,function ($query, $status) {
                 return $query->where('status', $status);
             })
-            ->get();
+            ->paginate($per_page);
 
         return $this->emailResults($emails);
 
