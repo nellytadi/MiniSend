@@ -1,23 +1,15 @@
 <template>
   <div class="container">
 
-
       <b-table striped :fields="fields" :items="items.data" responsive="lg" >
-        <!-- A custom formatted column -->
-        <!-- A virtual composite column -->
         <template #cell(more)="data">
           {{ data.item.id }}
         </template>
-
       </b-table>
-
-
 
     <pagination :data="items" @pagination-change-page="getResults"></pagination>
 
-
   </div>
-
 </template>
 
 <script>
@@ -32,9 +24,8 @@ export default {
       fields: [
           {key:'to',label:'Recipient',headerTitle:'Recipient'},
           {key:'from',label:'Sender',headerTitle:'Sender'},
-        {key:'subject',label:'Subject',headerTitle:'Subject'},
-
-        {key:'status',label:'Status',headerTitle:'Status'},
+          {key:'subject',label:'Subject',headerTitle:'Subject'},
+          {key:'status',label:'Status',headerTitle:'Status'},
         'more'
       ],
       items: {}

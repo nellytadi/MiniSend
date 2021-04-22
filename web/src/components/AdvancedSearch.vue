@@ -5,6 +5,7 @@
         <b-col lg="12" class="pb-2 pt-4 text-right"><b-button size="md" variant="outline-primary" v-text="'Advanced Search'" v-on:click="show = !show"></b-button></b-col>
 
         <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+
       <b-form-group
           id="input-group-1"
           label="Sender"
@@ -16,7 +17,6 @@
             placeholder="Enter sender's email"
         ></b-form-input>
       </b-form-group>
-
       <b-form-group id="input-group-2" label="Recipient" label-for="recipient">
         <b-form-input
             id="recipient"
@@ -40,7 +40,7 @@
             id="status"
             v-model="form.status"
             :options="statuses"
-            required
+
         ></b-form-select>
       </b-form-group>
 
@@ -79,7 +79,21 @@ export default {
 
     onSubmit(event) {
       event.preventDefault()
-      alert(JSON.stringify(this.form))
+
+      axios({
+        method: "get",
+        url: "http://api.test/api/email/search",
+        params: this.form,
+        // headers: { "Content-Type": "multipart/form-data" },
+      })
+          .then(function (response) {
+            //handle success
+            console.log(response.data);
+          })
+          .catch(function (response) {
+            //handle error
+            console.log(response);
+          })
     },
     onReset(event) {
       event.preventDefault()
