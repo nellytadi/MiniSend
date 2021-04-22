@@ -30,9 +30,7 @@ class EmailController extends Controller
 
         return new EmailResource($email);
     }
-    public function search(){
 
-    }
     public function getById($id){
         $email = Email::find($id);
 
@@ -44,6 +42,8 @@ class EmailController extends Controller
             'message'=>'Email resource not found'
         ],404);
     }
+
+
     public function getByRecipient($recipient){
         $emails = Email::where('to',$recipient)->get();
 
@@ -56,4 +56,7 @@ class EmailController extends Controller
         ],404);
     }
 
+    public function search(){
+
+    }
 }
