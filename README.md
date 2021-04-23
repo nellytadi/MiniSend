@@ -1,7 +1,7 @@
-##MiniSend
+## MiniSend
 A mini version of a transactional email app built with laravel on the backend as an API service and VueJs on the frontend.
 
-###Front End (VueJs) Project set up
+### Front End (VueJs) Project set up
 ```angular2html
 cd web
 ```
