@@ -48,12 +48,15 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
       </b-card>
+
     </b-container>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   name: "AdvancedSearch",
 
@@ -73,7 +76,6 @@ export default {
     axios.get('http://api.test/api/email/statuses/')
         .then(response => (this.statuses = response.data))
 
-
   },
   methods: {
 
@@ -82,16 +84,13 @@ export default {
 
       axios({
         method: "get",
-        url: "http://api.test/api/email/search",
+        url: 'http://api.test/api/email/search',
         params: this.form,
-        // headers: { "Content-Type": "multipart/form-data" },
-      })
-          .then(function (response) {
-            //handle success
-            console.log(response.data);
-          })
-          .catch(function (response) {
-            //handle error
+      }).then(response => {
+
+        this.$emit('setResults',response.data)
+
+      }).catch(function (response) {
             console.log(response);
           })
     },

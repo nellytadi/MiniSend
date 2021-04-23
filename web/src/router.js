@@ -1,5 +1,7 @@
+import Vue from 'vue'
 import VueRouter from 'vue-router';
 
+Vue.use(VueRouter)
 
 const routes = [
     {
@@ -12,6 +14,7 @@ const routes = [
         name:'show',
         component:  require('./views/Single.vue').default,
     },
+
 ];
 
 export default new VueRouter({

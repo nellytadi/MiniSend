@@ -8,6 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.config.productionTip = false

@@ -1,54 +1,56 @@
 <template>
-  <div class="container">
 
-      <b-table striped :fields="fields" :items="items.data" responsive="lg" >
-        <template #cell(more)="data">
-          {{ data.item.id }}
-        </template>
-      </b-table>
+  <b-container>
+    <b-table striped :fields="fields" :items="items.data"  responsive="lg" >
+      <template #cell(more)="data">
+        <router-link :to="'email/'+data.item.id">see</router-link>
+      </template>
+    </b-table>
 
     <pagination :data="items" @pagination-change-page="getResults"></pagination>
-
-  </div>
+  </b-container>
 </template>
 
 <script>
+
+import EmailPaginator from "./EmailPaginator";
 import axios from "axios";
 
 export default {
   name: "EmailTable",
-  data() {
+  components: {EmailPaginator},
+  data(){
     return {
-      perPage: 3,
-      currentPage: 1,
+     items:{},
       fields: [
-          {key:'to',label:'Recipient',headerTitle:'Recipient'},
-          {key:'from',label:'Sender',headerTitle:'Sender'},
-          {key:'subject',label:'Subject',headerTitle:'Subject'},
-          {key:'status',label:'Status',headerTitle:'Status'},
+        {key:'to',label:'Recipient',headerTitle:'Recipient'},
+        {key:'from',label:'Sender',headerTitle:'Sender'},
+        {key:'subject',label:'Subject',headerTitle:'Subject'},
+        {key:'status',label:'Status',headerTitle:'Status'},
         'more'
       ],
-      items: {}
+
     }
   },
-  mounted() {
-    this.getResults();
-
+  props: {
+    results:Object,
+    url:String
   },
-  methods: {
-    // Our method to GET results from a Laravel endpoint
-    getResults(page = 1) {
-      axios.get('http://api.test/api/emails?per_page=50&page=' + page)
+  mounted() {
+    this.items = this.results;
+  },
+  methods:{
+    getResults(page=1) {
+      let url = this.url
+
+      axios.get(url+'?page=' + page)
           .then(response => {
             this.items = response.data;
           });
     }
-  },
-  computed: {
-    rows() {
-      return this.items.length
-    }
   }
+
+
 }
 </script>
 
