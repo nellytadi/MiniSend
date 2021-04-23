@@ -19,6 +19,11 @@ const routes = [
         name:'recipients',
         component:  require('./views/Recipients.vue').default,
     },
+    {
+        path: '/create',
+        name:'create',
+        component:  require('./views/Create.vue').default,
+    },
 ];
 
 export default new VueRouter({

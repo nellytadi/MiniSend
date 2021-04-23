@@ -57,6 +57,10 @@ Run database seed to create sample data
 php artisan db:seed
 ```
 
+Run Tests 
+```angular2html
+php artisan test
+```
 
 Start laravel local server
 
