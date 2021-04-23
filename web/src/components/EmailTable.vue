@@ -29,28 +29,50 @@ export default {
         {key:'status',label:'Status',headerTitle:'Status'},
         'more'
       ],
+      params:{}
 
     }
   },
   props: {
     results:Object,
-    url:String
+    formData:Object,
   },
   mounted() {
     this.items = this.results;
+    this.params = this.formData;
+    console.log(this.params);
+
   },
   methods:{
     getResults(page=1) {
-      let url = this.url
 
-      axios.get(url+'?page=' + page)
-          .then(response => {
-            this.items = response.data;
-          });
+      let params = this.formData
+      console.log(params);
+
+      axios({
+        method: "get",
+        url: 'http://api.test/api/email/search',
+        params: params,
+      }).then(response => {
+        this.setResults(response.data)
+      }).catch(function (response) {
+        console.log(response);
+      })
+
+    },
+
+    setResults(data) {
+      this.items = data
+    }
+  },
+  watch: {
+    results: function () {
+      this.items = this.results;
+    },
+    formData: function () {
+      this.params = this.formData;
     }
   }
-
-
 }
 </script>
 

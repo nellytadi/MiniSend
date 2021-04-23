@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Navigation></Navigation>
-    <advanced-search></advanced-search>
-    <email-table v-if="hasLoaded" :results="results" :url="url"></email-table>
+    <advanced-search v-on:setSearchResults="setResults" v-on:setFormData="setForm"></advanced-search>
+    <email-table v-if="hasLoaded" :results="results" ></email-table>
   </div>
 </template>
 
@@ -24,28 +24,29 @@ export default {
     return{
       results:null,
       perPage:100,
-      currentPage:1,
       hasLoaded:false,
-      url:''
+      formData:{}
     }
   },
   created(){
-    this.url='http://api.test/api/emails'
-
-    axios.get(this.url+'?per_page='+this.perPage)
+    axios.get('http://api.test/api/email/search?per_page='+this.perPage)
         .then(response => {
-
           this.setResults(response.data)
-
         });
   },
   methods:{
-    setResults(data) {
 
+    setResults(data) {
         this.results = data;
         this.hasLoaded=true
+    },
+
+    setForm(data){
+
+       this.formData = data;
     }
   },
+
 }
 </script>
 
