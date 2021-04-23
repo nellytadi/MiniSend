@@ -81,22 +81,15 @@ export default {
 
     onSubmit(event) {
       event.preventDefault()
-      const params = {
+      const queryParams = {
         'subject': this.form.subject,
         'from': this.form.from,
         'to': this.form.to,
         'status': this.form.status
       };
-      axios({
-        method: "get",
-        url: 'http://api.test/api/email/search',
-        params: params,
-      }).then(response => {
-        this.$emit('setSearchResults',response.data)
-        this.$emit('setFormData',params)
-      }).catch(function (response) {
-            console.log(response);
-          })
+
+      this.$emit('setSearchParams',queryParams)
+
     },
     onReset(event) {
       event.preventDefault()

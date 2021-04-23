@@ -13,12 +13,10 @@
 
 <script>
 
-import EmailPaginator from "./EmailPaginator";
 import axios from "axios";
 
 export default {
   name: "EmailTable",
-  components: {EmailPaginator},
   data(){
     return {
      items:{},
@@ -29,25 +27,22 @@ export default {
         {key:'status',label:'Status',headerTitle:'Status'},
         'more'
       ],
-      params:{}
-
+      searchParams:{}
     }
   },
   props: {
-    results:Object,
-    formData:Object,
+    queryParams:Object,
   },
   mounted() {
-    this.items = this.results;
-    this.params = this.formData;
-    console.log(this.params);
-
+    this.getResults();
+    this.searchParams = this.queryParams;
   },
   methods:{
     getResults(page=1) {
 
-      let params = this.formData
-      console.log(params);
+
+      let params = this.searchParams;
+      params["page"] = page
 
       axios({
         method: "get",
@@ -58,7 +53,6 @@ export default {
       }).catch(function (response) {
         console.log(response);
       })
-
     },
 
     setResults(data) {
@@ -66,11 +60,9 @@ export default {
     }
   },
   watch: {
-    results: function () {
-      this.items = this.results;
-    },
-    formData: function () {
-      this.params = this.formData;
+    queryParams: function () {
+      this.searchParams = this.queryParams;
+      this.getResults();
     }
   }
 }
