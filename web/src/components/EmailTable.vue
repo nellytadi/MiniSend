@@ -3,7 +3,7 @@
   <b-container>
     <b-table striped :fields="fields" :items="items.data"  responsive="lg" >
       <template #cell(more)="data">
-        <router-link :to="'email/'+data.item.id">see</router-link>
+        <router-link :to="'email/id/'+data.item.id">see</router-link>
       </template>
     </b-table>
 

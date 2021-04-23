@@ -1,8 +1,12 @@
 <template>
-  <div>
+<div>
+  <b-container class="pb-2 pt-4 mt-5">
+    <div v-if="noRecords" class="text-center">
+      <h1>No records</h1>
+      <router-link to="/" class="card-link">Go back</router-link>
 
-    <b-container v-model="email" class="pb-2 pt-4 mt-5">
-
+    </div>
+    <div v-else v-for='email in emails' :key='email.id' class="mb-4" >
       <b-card :title="email.subject" :sub-title="'Sender: '+ email.from + ' Recipient: '+email.to">
         <small>Sent: {{email.created_at | humanize}}</small>
         <b-card-text v-text="email.text_content" class="pt-2">
@@ -10,34 +14,39 @@
         <b-card-text v-html="email.html_content" class="pt-2">
         </b-card-text>
 
-
         <router-link to="/" class="card-link">Go back</router-link>
 
       </b-card>
-    </b-container>
   </div>
+
+  </b-container>
+</div>
 </template>
 
 <script>
-import moment from "moment";
 import axios from "axios";
+import moment from "moment";
 
 export default {
-  name: "Single",
+  name: "Recipients",
   data(){
     return{
-      email:{}
+      emails:{},
+      noRecords:true
     }
   },
   created() {
-    axios.get('http://api.test/api/email/id/' + this.$route.params.id).then(response => this.email = response.data.data)
+    axios.get('http://api.test/api/email/recipient/' + this.$route.params.recipient)
+        .then(response => {
+          this.emails = response.data.data;
+          this.noRecords = false
+        });
   },
   filters:{
     humanize(value){
       return moment(value).fromNow();
     }
   }
-
 }
 </script>
 
