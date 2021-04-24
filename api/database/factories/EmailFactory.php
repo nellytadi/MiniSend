@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Helpers\Helper;
 use App\Models\Email;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EmailFactory extends Factory

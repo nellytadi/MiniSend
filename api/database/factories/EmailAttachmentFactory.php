@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\EmailAttachment;
 use Illuminate\Database\Eloquent\Factories\Factory;
-//use App\Models\Email;
 class EmailAttachmentFactory extends Factory
 {
     /**
