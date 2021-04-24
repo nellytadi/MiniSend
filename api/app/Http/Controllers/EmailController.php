@@ -29,7 +29,7 @@ class EmailController extends Controller
             foreach($request->file('attachments') as $file)
             {
                 $filename = time().'_'.$file->getClientOriginalName();
-                $file->storeAs('attachments', $filename);
+                $file->move('attachments', $filename);
                 $files[] = 'attachments/'.$filename;
             }
         }
@@ -101,7 +101,7 @@ class EmailController extends Controller
             ->when($status,function ($query, $status) {
                 return $query->where('status', $status);
             })
-            ->paginate($per_page);
+            ->latest()->paginate($per_page);
 
         return $this->emailResults($emails);
 
