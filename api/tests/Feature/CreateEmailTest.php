@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Email;
+use App\Models\EmailAttachment;
 
 class CreateEmailTest extends TestCase
 {
@@ -21,6 +22,19 @@ class CreateEmailTest extends TestCase
         $response = $this->post('/api/email/store',$data);
 
         $response->assertStatus(201);
+    }
+
+    public function testStoringEmailWithAttachments(){
+        $emails = Email::factory(2)
+            ->has(EmailAttachment::factory()->count(rand(1,3)))
+            ->make();
+
+        foreach ($emails as $email){
+            $response = $this->post('/api/email/store',$email->toArray());
+
+            $response->assertStatus(201);
+        }
+
     }
 
     public function testEmailDataIsValidated(){

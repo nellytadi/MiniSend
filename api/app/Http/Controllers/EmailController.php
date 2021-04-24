@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\EmailCollection;
 use App\Http\Resources\EmailResource;
 use App\Models\Email;
+use App\Models\EmailAttachment;
 use Illuminate\Http\Request;
 
 class EmailController extends Controller
@@ -17,8 +18,20 @@ class EmailController extends Controller
             'subject' => 'required|string',
             'text_content'=>'nullable|string',
             'html_content' =>'nullable|string',
-            'attachments.*' => 'nullable|file'
+            'attachments.*' => 'nullable|file|max:2048'
         ]);
+
+
+        $files = [];
+        if($request->hasfile('attachments'))
+        {
+            foreach($request->file('attachments') as $file)
+            {
+                $name = time().'_'.$file->extension();
+                $file->move(public_path('files'), $name);
+                $files[] = $name;
+            }
+        }
 
         $email = Email::create([
             'from' => $request->input('from'),
@@ -27,6 +40,8 @@ class EmailController extends Controller
             'text_content' => $request->input('text_content'),
             'html_content' => $request->input('html_content')
         ]);
+
+        $email->emailAttachments()->create($files);
 
         return $this->emailResult($email);
 
