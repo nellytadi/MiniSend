@@ -7,6 +7,7 @@ use App\Http\Resources\EmailResource;
 use App\Models\Email;
 use App\Models\EmailAttachment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmailController extends Controller
 {
@@ -35,6 +36,7 @@ class EmailController extends Controller
         }
 
         $email = Email::create([
+            'user_id' => Auth::user()->id,
             'from' => $request->input('from'),
             'to' => $request->input('to'),
             'subject' => $request->input('subject'),
@@ -58,16 +60,10 @@ class EmailController extends Controller
         return $this->emailResult($email);
 
     }
-    public function getAllEmails(Request $request){
 
-        $per_page = $request->input("per_page") ?? 10;
-        $emails = Email::paginate($per_page);
-
-        return $this->emailResults($emails);
-
-    }
     public function getById($id){
-        $email = Email::find($id);
+
+        $email = Email::where('user_id',Auth::user()->id)->whereId($id)->first();
 
         return $this->emailResult($email);
 
@@ -76,7 +72,7 @@ class EmailController extends Controller
 
     public function getByRecipient(Request $request,$recipient){
         $per_page = $request->input("per_page") ?? 10;
-        $emails = Email::where('to',$recipient)->paginate($per_page);
+        $emails = Email::where('user_id',Auth::user()->id)->where('to',$recipient)->paginate($per_page);
 
         return $this->emailResults($emails);
 
@@ -89,9 +85,10 @@ class EmailController extends Controller
         $status = $request->input('status');
         $per_page = $request->input("per_page") ?? 10;
 
-        $emails = Email::when($from,function ($query, $from) {
-            return $query->where('from', $from);
-        })
+        $emails = Email::where('user_id',Auth::user()->id)
+            ->when($from,function ($query, $from) {
+                return $query->where('from', $from);
+            })
             ->when($to,function ($query, $to) {
                 return $query->where('to', $to);
             })

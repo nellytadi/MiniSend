@@ -15,6 +15,7 @@ class CreateEmailsTable extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->integer('user_id');
             $table->string('from');
             $table->string('to');
             $table->string('subject');
@@ -22,6 +23,7 @@ class CreateEmailsTable extends Migration
             $table->longText('html_content');
             $table->string('status');
             $table->timestamps();
+
         });
 
 

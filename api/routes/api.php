@@ -28,7 +28,6 @@ Route::middleware(['json.response','auth:sanctum'])->group(function () {
     Route::get('/email/search/', [EmailController::class,'search']);
     Route::get('/email/statuses/', [StatusController::class,'getStatuses']);
 
-    Route::get('/emails',[EmailController::class,'getAllEmails']);
-
 });
+
 
