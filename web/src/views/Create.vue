@@ -57,6 +57,16 @@
       ></b-form-textarea>
       </b-form-group>
 
+      <b-form-file
+          v-model="form.attachments"
+          :state="Boolean(form.attachments)"
+          placeholder="Add attachments"
+          drop-placeholder="Drop file here..."
+          multiple
+      ></b-form-file>
+      <div class="mt-3">Selected file: {{ form.attachments ? form.attachments.name : '' }}</div>
+
+
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -76,29 +86,45 @@ export default {
         to: '',
         from: '',
         subject: '',
-        text_content: ''
+        text_content: '',
+        attachments: null,
       },
       showDismissibleAlert: false
     }
   },
   methods: {
     onSubmit(event) {
-      event.preventDefault()
+      event.preventDefault();
+
+      let formData = new FormData();
+
+      formData.append( 'to',this.form.to);
+      formData.append( 'from',this.form.from);
+      formData.append( 'subject',this.form.subject);
+      formData.append( 'text_content',this.form.text_content);
+      formData.append( 'html_content',this.form.text_content);
+
+      for( let i = 0; i < this.form.attachments.length; i++ ){
+
+        let file = this.form.attachments[i];
+        formData.append('attachments[' + i + ']', file);
+
+      }
 
       axios({
         method: "post",
         url: process.env.VUE_APP_API_URL+'/email/store',
-        data: {
-          to: this.form.to,
-          from: this.form.from,
-          subject: this.form.subject,
-          text_content: this.form.text_content,
-          html_content: this.form.text_content
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       }).then(response => {
+
         console.log(response.data)
+
         this.showDismissibleAlert=true
         this.onReset(event)
+
       }).catch(function (response) {
         console.log(response);
       })
@@ -110,6 +136,7 @@ export default {
       this.form.from = ''
       this.form.subject = ''
       this.form.text_content = ''
+      this.form.attachments = null
 
     }
   }
