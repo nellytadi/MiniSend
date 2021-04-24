@@ -22,7 +22,8 @@ class EmailResource extends JsonResource
             'text_content' => $this->text_content,
             'html_content' => $this->html_content,
             'status' => $this->status,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'attachments' => $this->emailAttachments
         ];
     }
 }

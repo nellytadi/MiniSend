@@ -12,5 +12,4 @@ class EmailAttachment extends Model
     use HasFactory;
     protected array $fillable = ['email_id','attachment'];
 
-    protected $primaryKey = 'email_id';
 }
