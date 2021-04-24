@@ -11,8 +11,10 @@ then run
 npm install
 ```
 
-Set your api url 
-
+Set your api url in .env file e.g.
+```angular2html
+VUE_APP_API_URL=http://api.test/api
+```
 Compiles and hot-reloads for development
 ```
 npm run serve
