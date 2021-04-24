@@ -14,6 +14,7 @@
             v-model="form.email"
             type="email"
             placeholder="Enter email"
+            value="test@minisender.com"
             required
         ></b-form-input>
       </b-form-group>
@@ -28,6 +29,7 @@
             v-model="form.password"
             type="password"
             placeholder="Enter Password"
+            value="password"
             required
         ></b-form-input>
       </b-form-group>
@@ -45,8 +47,8 @@ export default {
   data() {
     return {
       form: {
-        email: '',
-        password: '',
+        email: 'test@minisender.com',
+        password: 'password',
 
       },
     }
