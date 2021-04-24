@@ -46,7 +46,7 @@ export default {
 
       axios({
         method: "get",
-        url: 'http://api.test/api/email/search',
+        url: process.env.VUE_APP_API_URL+'/email/search',
         params: params,
       }).then(response => {
         this.setResults(response.data)

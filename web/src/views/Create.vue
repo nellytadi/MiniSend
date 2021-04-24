@@ -87,7 +87,7 @@ export default {
 
       axios({
         method: "post",
-        url: 'http://api.test/api/email/store',
+        url: process.env.VUE_APP_API_URL+'/email/store',
         data: {
           to: this.form.to,
           from: this.form.from,
@@ -98,6 +98,7 @@ export default {
       }).then(response => {
         console.log(response.data)
         this.showDismissibleAlert=true
+        this.onReset(event)
       }).catch(function (response) {
         console.log(response);
       })

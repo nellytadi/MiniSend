@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-    axios.get('http://api.test/api/email/recipient/' + this.$route.params.recipient)
+    axios.get(process.env.VUE_APP_API_URL+'/email/recipient/' + this.$route.params.recipient)
         .then(response => {
           this.emails = response.data.data;
           this.noRecords = false

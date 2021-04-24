@@ -30,7 +30,7 @@ export default {
     }
   },
   created() {
-    axios.get('http://api.test/api/email/id/' + this.$route.params.id).then(response => this.email = response.data.data)
+    axios.get(process.env.VUE_APP_API_URL+'/email/id/' + this.$route.params.id).then(response => this.email = response.data.data)
   },
   filters:{
     humanize(value){

@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://api.test/api/email/statuses/')
+    axios.get(process.env.VUE_APP_API_URL+'/email/statuses/')
         .then(response => (this.statuses = response.data))
 
   },
