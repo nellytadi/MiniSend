@@ -23,13 +23,14 @@ class EmailController extends Controller
 
 
         $files = [];
+
         if($request->hasfile('attachments'))
         {
             foreach($request->file('attachments') as $file)
             {
-                $name = time().'_'.$file->extension();
-                $file->move(public_path('files'), $name);
-                $files[] = $name;
+                $filename = time().'_'.$file->getClientOriginalName().'.'.$file->extension();
+                $file->storeAs('attachments', $filename);
+                $files[] = 'attachments/'.$filename;
             }
         }
 
@@ -41,7 +42,12 @@ class EmailController extends Controller
             'html_content' => $request->input('html_content')
         ]);
 
-        $email->emailAttachments()->create($files);
+        foreach ($files as $file){
+            EmailAttachment::create([
+                'email_id'=>$email->id,
+                'attachment' => $file
+            ]);
+        }
 
         return $this->emailResult($email);
 

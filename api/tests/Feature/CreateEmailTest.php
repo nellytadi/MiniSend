@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use App\Models\Email;
 use App\Models\EmailAttachment;
@@ -25,15 +27,16 @@ class CreateEmailTest extends TestCase
     }
 
     public function testStoringEmailWithAttachments(){
-        $emails = Email::factory(2)
-            ->has(EmailAttachment::factory()->count(rand(1,3)))
-            ->make();
+        $email = Email::factory()->make()->toArray();
 
-        foreach ($emails as $email){
-            $response = $this->post('/api/email/store',$email->toArray());
+        Storage::fake('document');
 
-            $response->assertStatus(201);
-        }
+        $email['attachments'] = [UploadedFile::fake()->create('document.pdf', 100),UploadedFile::fake()->create('document.pdf', 250)];
+
+        $response = $this->post('/api/email/store',$email);
+
+        $response->assertStatus(201);
+
 
     }
 
