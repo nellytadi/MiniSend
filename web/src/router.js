@@ -15,6 +15,11 @@ const routes = [
         component:  require('./views/Single.vue').default,
     },
     {
+        path: '/login',
+        name:'login',
+        component:  require('./views/Login.vue').default,
+    },
+    {
         path: '/email/recipient/:recipient',
         name:'recipients',
         component:  require('./views/Recipients.vue').default,
