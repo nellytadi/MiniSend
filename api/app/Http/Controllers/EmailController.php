@@ -30,7 +30,7 @@ class EmailController extends Controller
             foreach($request->file('attachments') as $file)
             {
                 $filename = time().'_'.$file->getClientOriginalName();
-                $file->move('attachments', $filename);
+                $file->move(public_path('attachments'), $filename);
                 $files[] = 'attachments/'.$filename;
             }
         }

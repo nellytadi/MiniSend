@@ -6,6 +6,7 @@ use App\Models\Email;
 use App\Models\EmailAttachment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Laravel\Sanctum\Sanctum;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
 
         if (env('APP_ENV') === 'production') exit('Fatal! APP is in production');
+
 
         User::factory()
             ->state([

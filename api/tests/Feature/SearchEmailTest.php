@@ -4,9 +4,11 @@ namespace Tests\Feature;
 
 use App\Helpers\Helper;
 use App\Models\Email;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -17,11 +19,17 @@ class SearchEmailTest extends TestCase
     public function testSearchWithFromParameter(){
         $from = $this->randomEmail();
         $count = 5;
+
+        $user = User::where('email','test@minisender.com')->first();
+        Sanctum::actingAs($user);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         Email::factory($count)->state([
+            'user_id'=>$user->id,
             'from' => $from
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?from='.$from,['Bearer Token'=>$this->getAuthenticatedUser()]);
+        $response = $this->json('GET','/api/email/search?from='.$from,['Bearer Token'=>$token]);
 
         //see it returns 5 record all 'from' is the $from created
 
@@ -43,11 +51,17 @@ class SearchEmailTest extends TestCase
         $to = $this->randomEmail();
 
         $count = 5;
+
+        $user = User::where('email','test@minisender.com')->first();
+        Sanctum::actingAs($user);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         Email::factory($count)->state([
+            'user_id'=>$user->id,
             'to' => $to
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?to='.$to,['Bearer Token'=>$this->getAuthenticatedUser()]);
+        $response = $this->json('GET','/api/email/search?to='.$to,['Bearer Token'=>$token]);
 
         //see it returns 5 record all 'to' is the $to created
          $response
@@ -68,11 +82,18 @@ class SearchEmailTest extends TestCase
 
         $subject = $this->faker->sentence;
         $count = 5;
+
+        $user = User::where('email','test@minisender.com')->first();
+        Sanctum::actingAs($user);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
         Email::factory($count)->state([
+            'user_id'=>$user->id,
             'subject' => $subject
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?subject='.$subject,['Bearer Token'=>$this->getAuthenticatedUser()]);
+        $response = $this->json('GET','/api/email/search?subject='.$subject,['Bearer Token'=>$token]);
 
         //see it returns 5 record and 'subject' has the $subject created
         $response->assertStatus(200)
@@ -82,14 +103,16 @@ class SearchEmailTest extends TestCase
     }
     public function testSearchWithStatusParameters(){
 
+        $user = User::where('email','test@minisender.com')->first();
+        Sanctum::actingAs($user);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        $emails = Email::factory(10)->create();
 
         $statuses = (new Helper)->getStatuses();
 
         $status = $statuses[rand(0,2)];
 
-        $response = $this->json('GET', '/api/email/search?status=' .$status,['Bearer Token'=>$this->getAuthenticatedUser()] );
+        $response = $this->json('GET', '/api/email/search?status=' .$status,['Bearer Token'=>$token] );
 
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
@@ -116,14 +139,20 @@ class SearchEmailTest extends TestCase
         $status = $statuses[rand(0,2)];
         $count = 5;
 
+        $user = User::where('email','test@minisender.com')->first();
+        Sanctum::actingAs($user);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
         Email::factory($count)->state([
+            'user_id'=>$user->id,
             'from' => $from,
             'to' => $to,
             'subject' => $subject,
             'status' => $status
         ])->create();
 
-        $response = $this->json('GET',"/api/email/search?from=$from&to=$to&subject=$subject&status=$status",['Bearer Token'=>$this->getAuthenticatedUser()]);
+        $response = $this->json('GET',"/api/email/search?from=$from&to=$to&subject=$subject&status=$status",['Bearer Token'=>$token]);
 
         //see it returns 5 record all 'from' is the $from created
 
@@ -148,19 +177,5 @@ class SearchEmailTest extends TestCase
         return Str::random(10).'@mailsender.com';
     }
 
-    /**
-     * Function to fetch authenticated user.
-     *
-     * @return String
-     */
-    private function getAuthenticatedUser(): string
-    {
-        $data = [
-            'email' => 'test@minisender.com',
-            'password' => 'password'
-        ];
-        $token = $this->json('POST','/api/login',$data);
 
-        return $token['access_token'];
-    }
 }
