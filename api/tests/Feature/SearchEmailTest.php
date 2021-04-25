@@ -21,7 +21,7 @@ class SearchEmailTest extends TestCase
             'from' => $from
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?from='.$from);
+        $response = $this->json('GET','/api/email/search?from='.$from,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         //see it returns 5 record all 'from' is the $from created
 
@@ -47,7 +47,7 @@ class SearchEmailTest extends TestCase
             'to' => $to
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?to='.$to);
+        $response = $this->json('GET','/api/email/search?to='.$to,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         //see it returns 5 record all 'to' is the $to created
          $response
@@ -72,7 +72,7 @@ class SearchEmailTest extends TestCase
             'subject' => $subject
         ])->create();
 
-        $response = $this->json('GET','/api/email/search?subject='.$subject);
+        $response = $this->json('GET','/api/email/search?subject='.$subject,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         //see it returns 5 record and 'subject' has the $subject created
         $response->assertStatus(200)
@@ -89,7 +89,7 @@ class SearchEmailTest extends TestCase
 
         $status = $statuses[rand(0,2)];
 
-        $response = $this->json('GET', '/api/email/search?status=' .$status );
+        $response = $this->json('GET', '/api/email/search?status=' .$status,['Bearer Token'=>$this->getAuthenticatedUser()] );
 
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
@@ -123,7 +123,7 @@ class SearchEmailTest extends TestCase
             'status' => $status
         ])->create();
 
-        $response = $this->json('GET',"/api/email/search?from=$from&to=$to&subject=$subject&status=$status");
+        $response = $this->json('GET',"/api/email/search?from=$from&to=$to&subject=$subject&status=$status",['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         //see it returns 5 record all 'from' is the $from created
 
@@ -146,5 +146,21 @@ class SearchEmailTest extends TestCase
 
     private function randomEmail(){
         return Str::random(10).'@mailsender.com';
+    }
+
+    /**
+     * Function to fetch authenticated user.
+     *
+     * @return String
+     */
+    private function getAuthenticatedUser(): string
+    {
+        $data = [
+            'email' => 'test@minisender.com',
+            'password' => 'password'
+        ];
+        $token = $this->json('POST','/api/login',$data);
+
+        return $token['access_token'];
     }
 }

@@ -63,7 +63,7 @@ class EmailController extends Controller
 
     public function getById($id){
 
-        $email = Email::where('user_id',Auth::user()->id)->whereId($id)->first();
+        $email = Email::whereId($id)->where('user_id',Auth::user()->id)->first();
 
         return $this->emailResult($email);
 

@@ -12,16 +12,14 @@ use App\Models\EmailAttachment;
 
 class CreateEmailTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+
     public function testStoringEmail()
     {
+
+
         $data = Email::factory()->make()->toArray();
 
-        $response = $this->post('/api/email/store',$data);
+        $response = $this->post('/api/email/store',$data,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         $response->assertStatus(201);
     }
@@ -33,7 +31,7 @@ class CreateEmailTest extends TestCase
 
         $email['attachments'] = [UploadedFile::fake()->create('document.pdf', 100),UploadedFile::fake()->create('document.pdf', 250)];
 
-        $response = $this->post('/api/email/store',$email);
+        $response = $this->post('/api/email/store',$email,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         $response->assertStatus(201);
 
@@ -47,8 +45,23 @@ class CreateEmailTest extends TestCase
             'subject' => '',
         ])->make()->toArray();
 
-        $response = $this->post('/api/email/store',$data);
+        $response = $this->post('/api/email/store',$data,['Bearer Token'=>$this->getAuthenticatedUser()]);
 
         $response->assertStatus(422)->assertJsonValidationErrors(['from','to','subject']);
+    }
+    /**
+     * Function to fetch authenticated user.
+     *
+     * @return String
+     */
+    private function getAuthenticatedUser(): string
+    {
+        $data = [
+            'email' => 'test@minisender.com',
+            'password' => 'password'
+        ];
+        $token = $this->json('POST','/api/login',$data);
+
+        return $token['access_token'];
     }
 }
