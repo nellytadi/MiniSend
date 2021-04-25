@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,9 @@ Route::middleware(['json.response','auth:sanctum'])->group(function () {
     Route::get('/email/recipient/{recipient}', [EmailController::class, 'getByRecipient']);
     Route::get('/email/search/', [EmailController::class,'search']);
     Route::get('/email/statuses/', [StatusController::class,'getStatuses']);
-
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
 

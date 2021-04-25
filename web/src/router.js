@@ -14,6 +14,7 @@ const routes = [
         name:'show',
         component:  require('./views/Single.vue').default,
     },
+
     {
         path: '/login',
         name:'login',
@@ -31,8 +32,10 @@ const routes = [
     },
 ];
 
-export default new VueRouter({
-    routes,
-    linkActiveClass:'active',
-    mode: 'history'
+const router = new VueRouter({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
+
+export default router

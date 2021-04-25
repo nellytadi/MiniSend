@@ -1,1 +1,0 @@
-axios.defaults.withCredentials = true;
