@@ -53,6 +53,7 @@ export const getters = {
         return state.error;
     },
     loggedIn: state => {
-        return !!state.user;
+        return !!state.token;
     }
+
 };
