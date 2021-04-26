@@ -11,7 +11,7 @@ then run
 npm install
 ```
 
-Set your api url in .env file e.g.
+Set your api url in web/.env file e.g.
 ```angular2html
 VUE_APP_API_URL=http://api.test/api
 ```
@@ -63,6 +63,13 @@ Run Tests
 ```angular2html
 php artisan test
 ```
+Default User Login details
+```angular2html
+email: test@minisender.com
+
+password: password
+```
+
 
 Start laravel local server
 
