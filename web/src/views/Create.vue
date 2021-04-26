@@ -113,10 +113,12 @@ export default {
 
       axios({
         method: "post",
-        url: process.env.VUE_APP_API_URL+'/email/store',
+        url: process.env.VUE_APP_API_URL+'/api/email/store',
         data: formData,
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + localStorage.getItem("token"),
+
         }
       }).then(response => {
 

@@ -73,7 +73,11 @@ export default {
     }
   },
   mounted () {
-    axios.get(process.env.VUE_APP_API_URL+'/email/statuses/')
+    axios.get(process.env.VUE_APP_API_URL+'/api/email/statuses/',{
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem("token"),
+      }
+    })
         .then(response => (this.statuses = response.data))
 
   },

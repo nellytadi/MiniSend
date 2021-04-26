@@ -36,7 +36,11 @@ export default {
     }
   },
   created() {
-    axios.get(process.env.VUE_APP_API_URL+'/email/recipient/' + this.$route.params.recipient)
+    axios.get(process.env.VUE_APP_API_URL+'/api/email/recipient/' + this.$route.params.recipient, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem("token"),
+      }
+    })
         .then(response => {
           this.emails = response.data.data;
           this.noRecords = false

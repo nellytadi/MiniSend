@@ -46,11 +46,15 @@ export default {
 
       axios({
         method: "get",
-        url: process.env.VUE_APP_API_URL+'/email/search',
+        url: process.env.VUE_APP_API_URL+'/api/email/search',
         params: params,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem("token"),
+        }
       }).then(response => {
         this.setResults(response.data)
       }).catch(function (response) {
+        alert('No result found');
         console.log(response);
       })
     },
