@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 */
 
 Route::post('/login',[UserController::class,'login']);
-Route::post('/logout',[UserController::class,'logout']);
 
 
 Route::middleware(['json.response','auth:sanctum'])->group(function () {
@@ -31,6 +30,8 @@ Route::middleware(['json.response','auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::post('/logout',[UserController::class,'logout']);
+
 });
 
 

@@ -25,7 +25,7 @@ export const mutations = {
 
 export const actions = {
     login({ commit }, payload) {
-        commit("SET_LOADING", true);
+
         return AuthService.login(payload)
             .then(response => {
                 commit("SET_TOKEN", response.data.access_token);
