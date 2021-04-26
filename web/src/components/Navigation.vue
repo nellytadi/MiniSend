@@ -7,7 +7,7 @@
     <b-collapse id="nav-collapse" is-nav>
 
       <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav class="ml-auto" >
 
           <b-nav-item class="mr-3">
             <router-link to="/create" style="color: #fff">Create Email</router-link>
@@ -19,6 +19,11 @@
         </b-nav-form>
 
       </b-navbar-nav>
+<!--      <b-navbar-nav class="ml-auto" v-else>-->
+<!--        <b-nav-item class="mr-3">-->
+<!--          <router-link to="/login" style="color: #fff">Login</router-link>-->
+<!--        </b-nav-item>-->
+<!--      </b-navbar-nav>-->
     </b-collapse>
   </b-navbar>
 
@@ -32,12 +37,16 @@ export default {
       search:''
     }
   },
+
   methods:{
     onSubmit(event) {
       event.preventDefault();
       this.$router.push({ name: 'recipients', params: { recipient: this.search } })
     },
-  }
+  },
+
+
+
 }
 </script>
 

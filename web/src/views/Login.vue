@@ -2,7 +2,7 @@
   <div>
     <b-container class="mt-5">
       <h1 class="text-center">Login</h1>
-    <b-form @submit="onSubmit">
+    <b-form @submit.prevent="login">
       <b-form-group
           id="input-group-1"
           label="Email address:"
@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import { mapGetters } from "vuex";
 export default {
   name:'Login',
   data() {
@@ -51,24 +50,17 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters("auth", ["authUser", "error", "loading"]),
+  },
   methods: {
-    onSubmit(event) {
-      event.preventDefault()
-      axios({
-        method: "post",
-        url: process.env.VUE_APP_API_URL+'/login',
-        data: {
-          'email':this.form.email,
-          'password':this.form.password
-        },
-      }).then(response => {
-        console.log(response.data)
-
-      }).catch(function (response) {
-        console.log(response);
-      })
+    login() {
+      this.$store.dispatch("auth/login", this.form).then(() => {
+        this.$router.push(this.$route.query.redirect || "/");
+      });
     },
+  },
 
   }
-}
+
 </script>
