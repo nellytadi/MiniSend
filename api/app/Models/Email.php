@@ -11,7 +11,7 @@ class Email extends Model
     use Uuids;
     use HasFactory;
 
-    protected array $fillable = ['user_id','from','to','subject','text_content','html_content','status'];
+    protected  $fillable = ['user_id','from','to','subject','text_content','html_content','status'];
 
     public function emailAttachments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

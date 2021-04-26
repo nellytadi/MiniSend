@@ -10,6 +10,6 @@ class EmailAttachment extends Model
 {
 
     use HasFactory;
-    protected array $fillable = ['email_id','attachment'];
+    protected $fillable = ['email_id','attachment'];
 
 }

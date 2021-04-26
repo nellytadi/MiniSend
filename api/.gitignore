@@ -2,7 +2,6 @@
 /public/hot
 /public/storage
 /public/attachments
-/public/test/emails
 /storage/*.key
 /vendor
 .env
